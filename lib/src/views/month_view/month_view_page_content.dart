@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:kalender/src/extensions.dart';
-import 'package:kalender/src/models/calendar/calendar_controller.dart';
-import 'package:kalender/src/providers/calendar_scope.dart';
 import 'package:kalender/src/components/event_groups/multi_day_event_group_widget.dart';
 import 'package:kalender/src/components/gesture_detectors/multi_day_header_gesture_detector.dart';
+import 'package:kalender/src/extensions.dart';
+import 'package:kalender/src/models/calendar/calendar_controller.dart';
 import 'package:kalender/src/models/event_group_controllers/multi_day_event_group.dart';
 import 'package:kalender/src/models/view_configurations/month_configurations/month_view_configuration.dart';
+import 'package:kalender/src/providers/calendar_scope.dart';
 import 'package:kalender/src/providers/calendar_style.dart';
 
 class MonthViewPageContent<T> extends StatelessWidget {
@@ -57,27 +57,21 @@ class MonthViewPageContent<T> extends StatelessWidget {
                       );
 
                       // Get the events from the events controller.
-                      final events =
-                          scope.eventsController.getEventsFromDateRange(
+                      final events = scope.eventsController.getEventsFromDateRange(
                         weekDateRange,
                       );
 
-                      controller.visibleEvents =
-                          controller.visibleEvents.followedBy(events);
+                      controller.visibleEvents = controller.visibleEvents.followedBy(events);
 
                       // Create a multi day event group from the events.
                       final multiDayEventGroup = MultiDayEventGroup.fromEvents(
                         events: events,
                       );
 
-                      final selectedEvent =
-                          scope.eventsController.selectedEvent;
-                      final horizontalStepDuration =
-                          viewConfiguration.horizontalStepDuration;
-                      final verticalStepDuration =
-                          viewConfiguration.verticalStepDuration;
-                      final multiDayTileHeight =
-                          viewConfiguration.multiDayTileHeight;
+                      final selectedEvent = scope.eventsController.selectedEvent;
+                      final horizontalStepDuration = viewConfiguration.horizontalStepDuration;
+                      final verticalStepDuration = viewConfiguration.verticalStepDuration;
+                      final multiDayTileHeight = viewConfiguration.multiDayTileHeight;
 
                       // Calculate the height of the multi day event group.
                       final height = multiDayTileHeight *
@@ -85,16 +79,14 @@ class MonthViewPageContent<T> extends StatelessWidget {
                               (viewConfiguration.createMultiDayEvents ? 1 : 0));
 
                       final gestureDetector = MultiDayHeaderGestureDetector<T>(
-                        createMultiDayEvents:
-                            viewConfiguration.createMultiDayEvents,
-                        createEventTrigger:
-                            viewConfiguration.createEventTrigger,
+                        createMultiDayEvents: viewConfiguration.createMultiDayEvents,
+                        createEventTrigger: viewConfiguration.createEventTrigger,
                         visibleDateRange: weekDateRange,
                         horizontalStep: horizontalStep,
                         verticalStep: verticalStep,
                       );
 
-                      final eventGroup = MultiDayEventGroupWidget<T>(
+                      final eventGroup = MultiDayEventGroupWidget<T>.month(
                         multiDayEventGroup: multiDayEventGroup,
                         visibleDateRange: weekDateRange,
                         horizontalStep: horizontalStep,
@@ -114,28 +106,24 @@ class MonthViewPageContent<T> extends StatelessWidget {
                               visibleDateRange.start.add(
                                 Duration(days: (c * 7) + r),
                               ),
-                              (date) =>
-                                  scope.functions.onDateTapped?.call(date),
+                              (date) => scope.functions.onDateTapped?.call(date),
                             ),
                         ],
                       );
 
                       ListenableBuilder? changingEvent;
-                      if (selectedEvent != null &&
-                          scope.eventsController.hasChangingEvent) {
+                      if (selectedEvent != null && scope.eventsController.hasChangingEvent) {
                         changingEvent = ListenableBuilder(
                           listenable: scope.eventsController.selectedEvent!,
                           builder: (context, child) {
-                            final occursDuring = selectedEvent
-                                .occursDuringDateTimeRange(weekDateRange);
+                            final occursDuring = selectedEvent.occursDuringDateTimeRange(weekDateRange);
 
                             if (occursDuring) {
-                              final multiDayEventGroup =
-                                  MultiDayEventGroup.fromEvents(
+                              final multiDayEventGroup = MultiDayEventGroup.fromEvents(
                                 events: [selectedEvent],
                               );
 
-                              return MultiDayEventGroupWidget<T>(
+                              return MultiDayEventGroupWidget<T>.month(
                                 multiDayEventGroup: multiDayEventGroup,
                                 visibleDateRange: weekDateRange,
                                 horizontalStep: horizontalStep,

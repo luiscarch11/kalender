@@ -10,17 +10,17 @@ import 'package:kalender/src/models/calendar/calendar_event.dart';
 ///
 /// [multiDayTileHeight] is the height of a tile in the [MultiDayEventGroupWidget].
 ///
-abstract class MultiDayEventsLayoutDelegate<T>
-    extends MultiChildLayoutDelegate {
+abstract class MultiDayEventsLayoutDelegate<T> extends MultiChildLayoutDelegate {
   MultiDayEventsLayoutDelegate({
     required this.events,
     required this.visibleDateRange,
     required this.multiDayTileHeight,
+    required this.verticalStep,
   });
-
   final List<CalendarEvent<T>> events;
   final DateTimeRange visibleDateRange;
   final double multiDayTileHeight;
+  final double verticalStep;
 
   @override
   bool shouldRelayout(covariant MultiDayEventsLayoutDelegate oldDelegate) {
@@ -28,12 +28,12 @@ abstract class MultiDayEventsLayoutDelegate<T>
   }
 }
 
-class MultiDayEventsDefaultLayoutDelegate<T>
-    extends MultiDayEventsLayoutDelegate<T> {
+class MultiDayEventsDefaultLayoutDelegate<T> extends MultiDayEventsLayoutDelegate<T> {
   MultiDayEventsDefaultLayoutDelegate({
     required super.events,
     required super.visibleDateRange,
     required super.multiDayTileHeight,
+    required super.verticalStep,
   });
 
   @override
@@ -68,8 +68,7 @@ class MultiDayEventsDefaultLayoutDelegate<T>
         eventDates.indexOf(lastVisibleDate) + 1,
       );
 
-      final dx = (visibleDates.indexOf(visibleEventDates.first) * dayWidth)
-          .roundToDouble();
+      final dx = (visibleDates.indexOf(visibleEventDates.first) * dayWidth).roundToDouble();
       tileDx[id] = dx;
 
       // Calculate the width of the tile.

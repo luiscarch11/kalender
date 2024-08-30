@@ -9,14 +9,11 @@ class CalendarLayoutDelegates<T> {
     MultiDayEventLayoutDelegateBuilder<T>? multiDayTileLayoutDelegate,
     MultiDayEventLayoutDelegateBuilder<T>? monthTileLayoutDelegate,
   }) {
-    this.tileLayoutDelegate =
-        tileLayoutDelegate ?? defaultDayTileLayoutController;
+    this.tileLayoutDelegate = tileLayoutDelegate ?? defaultDayTileLayoutController;
 
-    this.multiDayTileLayoutDelegate =
-        multiDayTileLayoutDelegate ?? defaultMultiDayTileLayoutController;
+    this.multiDayTileLayoutDelegate = multiDayTileLayoutDelegate ?? defaultMultiDayTileLayoutController;
 
-    this.monthTileLayoutDelegate =
-        monthTileLayoutDelegate ?? defaultMonthTileLayoutController;
+    this.monthTileLayoutDelegate = monthTileLayoutDelegate ?? defaultMonthTileLayoutController;
   }
 
   ///
@@ -50,11 +47,13 @@ class CalendarLayoutDelegates<T> {
     required DateTimeRange visibleDateRange,
     required double multiDayTileHeight,
     required List<CalendarEvent<T>> events,
+    required double verticalStep,
   }) {
     return MultiDayEventsDefaultLayoutDelegate(
       events: events,
       visibleDateRange: visibleDateRange,
       multiDayTileHeight: multiDayTileHeight,
+      verticalStep: verticalStep,
     );
   }
 
@@ -63,11 +62,13 @@ class CalendarLayoutDelegates<T> {
     required DateTimeRange visibleDateRange,
     required double multiDayTileHeight,
     required List<CalendarEvent<T>> events,
+    required double verticalStep,
   }) {
     return MultiDayEventsDefaultLayoutDelegate(
       events: events,
       visibleDateRange: visibleDateRange,
       multiDayTileHeight: multiDayTileHeight,
+      verticalStep: verticalStep,
     );
   }
 
