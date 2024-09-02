@@ -21,10 +21,13 @@ class CalendarTileComponents<T> {
     this.multiDayTileBuilder,
     this.eventTileBuilder,
     this.multiDayEventTileBuilder,
+    this.moreEventsTile,
   });
 
   /// The [TileBuilder] is used to build event tiles that are displayed on [SingleDayView] and [MultiDayView] days.
   final TileBuilder<T>? tileBuilder;
+
+  final Widget? moreEventsTile;
 
   /// The [MultiDayTileBuilder] is used to build event tiles that are displayed on multiple days.
   final MultiDayTileBuilder<T>? multiDayTileBuilder;
@@ -61,21 +64,15 @@ class CalendarComponents {
     this.weekNumberBuilder = weekNumberBuilder ?? _defaultWeekNumberBuilder;
     this.hourLineBuilder = hourLineBuilder ?? _defaultHourLineBuilder;
     this.timelineBuilder = timelineBuilder ?? _defaultTimelineBuilder;
-    this.daySeparatorBuilder =
-        daySeparatorBuilder ?? _defaultDaySeparatorBuilder;
-    this.timeIndicatorBuilder =
-        timeIndicatorBuilder ?? _defaultTimeIndicatorBuilder;
+    this.daySeparatorBuilder = daySeparatorBuilder ?? _defaultDaySeparatorBuilder;
+    this.timeIndicatorBuilder = timeIndicatorBuilder ?? _defaultTimeIndicatorBuilder;
     this.monthGridBuilder = monthGridBuilder ?? _defaultMonthGridBuilder;
-    this.monthCellHeaderBuilder =
-        monthCellHeaderBuilder ?? _defaultMonthCellHeaderBuilder;
+    this.monthCellHeaderBuilder = monthCellHeaderBuilder ?? _defaultMonthCellHeaderBuilder;
     this.monthHeaderBuilder = monthHeaderBuilder ?? _defaultMonthHeaderBuilder;
     this.tileHandleBuilder = tileHandleBuilder ?? _defaultTileHandleBuilder;
-    this.scheduleMonthHeaderBuilder =
-        scheduleMonthHeaderBuilder ?? _defaultScheduleMonthHeaderBuilder;
-    this.calendarZoomDetector =
-        calendarZoomDetector ?? _defaultCalendarZoomDetector;
-    this.timelineTextBuilder =
-        timelineTextBuilder ?? _defaultTimelineTextBuilder;
+    this.scheduleMonthHeaderBuilder = scheduleMonthHeaderBuilder ?? _defaultScheduleMonthHeaderBuilder;
+    this.calendarZoomDetector = calendarZoomDetector ?? _defaultCalendarZoomDetector;
+    this.timelineTextBuilder = timelineTextBuilder ?? _defaultTimelineTextBuilder;
   }
 
   /// This builder is used to build the widget displayed in the calendar's header.

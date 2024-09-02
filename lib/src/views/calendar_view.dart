@@ -126,7 +126,8 @@ class CalendarView<T> extends StatelessWidget {
     this.layoutDelegates,
     this.eventTileBuilder,
     this.multiDayEventTileBuilder,
-  }) : assert(
+  })  : headerHeight = 0,
+        assert(
           tileBuilder != null && multiDayTileBuilder != null,
           'All Event Tile builders must be assigned',
         );
@@ -145,6 +146,7 @@ class CalendarView<T> extends StatelessWidget {
     this.eventTileBuilder,
     this.multiDayEventTileBuilder,
   })  : scheduleTileBuilder = null,
+        headerHeight = 0,
         assert(
           tileBuilder != null && multiDayTileBuilder != null,
           'EventTileBuilder and MultiDayEventTileBuilder must be assigned',
@@ -165,6 +167,7 @@ class CalendarView<T> extends StatelessWidget {
     this.eventHandlers,
     this.layoutDelegates,
     this.eventTileBuilder,
+    this.headerHeight = 0,
     this.multiDayEventTileBuilder,
   })  : tileBuilder = null,
         scheduleTileBuilder = null,
@@ -191,6 +194,7 @@ class CalendarView<T> extends StatelessWidget {
     this.multiDayEventTileBuilder,
   })  : tileBuilder = null,
         multiDayTileBuilder = null,
+        headerHeight = 0,
         assert(
           scheduleTileBuilder != null,
           'ScheduleTileBuilder must be assigned',
@@ -228,7 +232,7 @@ class CalendarView<T> extends StatelessWidget {
 
   final EventTileBuilder? eventTileBuilder;
   final MultiDayEventTileBuilder? multiDayEventTileBuilder;
-
+  final double headerHeight;
   @override
   Widget build(BuildContext context) {
     if (viewConfiguration is MultiDayViewConfiguration) {
@@ -239,8 +243,7 @@ class CalendarView<T> extends StatelessWidget {
         multiDayTileBuilder: multiDayTileBuilder!,
         components: components,
         functions: eventHandlers,
-        multiDayViewConfiguration:
-            viewConfiguration as MultiDayViewConfiguration,
+        multiDayViewConfiguration: viewConfiguration as MultiDayViewConfiguration,
         style: style,
         layoutDelegates: layoutDelegates,
         eventTileBuilder: eventTileBuilder,
@@ -250,6 +253,7 @@ class CalendarView<T> extends StatelessWidget {
 
     if (viewConfiguration is MonthViewConfiguration) {
       return MonthView<T>(
+        headerHeight: headerHeight,
         controller: controller,
         eventsController: eventsController,
         multiDayTileBuilder: multiDayTileBuilder!,
@@ -268,8 +272,7 @@ class CalendarView<T> extends StatelessWidget {
         eventsController: eventsController,
         components: components,
         functions: eventHandlers,
-        scheduleViewConfiguration:
-            viewConfiguration as ScheduleViewConfiguration,
+        scheduleViewConfiguration: viewConfiguration as ScheduleViewConfiguration,
         style: style,
         layoutDelegates: layoutDelegates,
         scheduleTileBuilder: scheduleTileBuilder!,

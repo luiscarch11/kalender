@@ -16,10 +16,12 @@ class MonthViewPageContent<T> extends StatelessWidget {
     required this.horizontalStep,
     required this.verticalStep,
     required this.controller,
+    required this.headerHeight,
   });
 
   final DateTimeRange visibleDateRange;
   final MonthViewConfiguration viewConfiguration;
+  final double headerHeight;
   final double horizontalStep;
   final double verticalStep;
   final CalendarController<T> controller;
@@ -96,6 +98,7 @@ class MonthViewPageContent<T> extends StatelessWidget {
                         isChanging: false,
                         multiDayTileHeight: multiDayTileHeight,
                         rescheduleDateRange: visibleDateRange,
+                        headerHeight: headerHeight,
                       );
 
                       final cellHeaders = Row(
@@ -124,6 +127,7 @@ class MonthViewPageContent<T> extends StatelessWidget {
                               );
 
                               return MultiDayEventGroupWidget<T>.month(
+                                headerHeight: headerHeight,
                                 multiDayEventGroup: multiDayEventGroup,
                                 visibleDateRange: weekDateRange,
                                 horizontalStep: horizontalStep,

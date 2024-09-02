@@ -11,10 +11,12 @@ class MonthViewContent<T> extends StatelessWidget {
     super.key,
     required this.viewConfiguration,
     required this.controller,
+    required this.headerHeight,
   });
 
   final MonthViewConfiguration viewConfiguration;
   final CalendarController<T> controller;
+  final double headerHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +37,7 @@ class MonthViewContent<T> extends StatelessWidget {
               controller: state.pageController,
               itemCount: state.numberOfPages,
               onPageChanged: (index) {
-                final newVisibleDateTimeRange =
-                    viewConfiguration.calculateVisibleDateRangeForIndex(
+                final newVisibleDateTimeRange = viewConfiguration.calculateVisibleDateRangeForIndex(
                   index: index,
                   calendarStart: scope.state.adjustedDateTimeRange.start,
                 );
@@ -45,8 +46,7 @@ class MonthViewContent<T> extends StatelessWidget {
                 scope.state.visibleDateTimeRange = newVisibleDateTimeRange;
 
                 // Update the selected date.
-                controller.selectedDate =
-                    newVisibleDateTimeRange.centerDateTime;
+                controller.selectedDate = newVisibleDateTimeRange.centerDateTime;
 
                 // Call the onPageChanged function.
                 scope.functions.onPageChanged?.call(
@@ -54,13 +54,13 @@ class MonthViewContent<T> extends StatelessWidget {
                 );
               },
               itemBuilder: (context, index) {
-                final visibleDateRange =
-                    viewConfiguration.calculateVisibleDateRangeForIndex(
+                final visibleDateRange = viewConfiguration.calculateVisibleDateRangeForIndex(
                   index: index,
                   calendarStart: scope.state.adjustedDateTimeRange.start,
                 );
 
                 return MonthViewPageContent<T>(
+                  headerHeight: headerHeight,
                   viewConfiguration: viewConfiguration,
                   visibleDateRange: visibleDateRange,
                   horizontalStep: horizontalStep,

@@ -14,6 +14,7 @@ class MultiDayEventGroupWidget<T> extends StatelessWidget {
     required this.multiDayTileHeight,
     required this.horizontalStep,
     required this.horizontalStepDuration,
+    required this.headerHeight,
     this.verticalStep,
     this.verticalStepDuration,
     this.rescheduleDateRange,
@@ -35,6 +36,7 @@ class MultiDayEventGroupWidget<T> extends StatelessWidget {
         horizontalStep: horizontalStep,
         horizontalStepDuration: horizontalStepDuration,
         verticalStep: null,
+        headerHeight: 0,
         verticalStepDuration: null,
       );
   factory MultiDayEventGroupWidget.month({
@@ -46,10 +48,12 @@ class MultiDayEventGroupWidget<T> extends StatelessWidget {
     required Duration horizontalStepDuration,
     DateTimeRange? rescheduleDateRange,
     required double verticalStep,
+    required double headerHeight,
     required Duration verticalStepDuration,
   }) =>
       MultiDayEventGroupWidget._(
         isChanging: isChanging,
+        headerHeight: headerHeight,
         visibleDateRange: visibleDateRange,
         multiDayEventGroup: multiDayEventGroup,
         multiDayTileHeight: multiDayTileHeight,
@@ -65,6 +69,7 @@ class MultiDayEventGroupWidget<T> extends StatelessWidget {
   final MultiDayEventGroup<T> multiDayEventGroup;
   final double multiDayTileHeight;
   final double horizontalStep;
+  final double headerHeight;
   final Duration horizontalStepDuration;
   final double? verticalStep;
   final Duration? verticalStepDuration;
@@ -94,32 +99,42 @@ class MultiDayEventGroupWidget<T> extends StatelessWidget {
         continuesBefore: continuesBefore,
         continuesAfter: continuesAfter,
       );
-
-      final multiDayEventTile = scope.tileComponents.multiDayEventTileBuilder?.call(
-            event,
-            tileConfiguration,
-            rescheduleDateRange ?? visibleDateRange,
-            horizontalStep,
-            horizontalStepDuration,
-            verticalStepDuration,
-            verticalStep,
-          ) ??
-          MultiDayEventGestureDetector(
-            event: event,
-            rescheduleDateRange: rescheduleDateRange ?? visibleDateRange,
-            horizontalStep: horizontalStep,
-            horizontalStepDuration: horizontalStepDuration,
-            verticalStep: verticalStep,
-            verticalStepDuration: verticalStepDuration,
-            tileConfiguration: tileConfiguration,
-          );
-
-      children.add(
-        LayoutId(
-          id: i,
-          child: multiDayEventTile,
-        ),
-      );
+      late Widget multiDayEventTile;
+      if (verticalStep != null && i * multiDayTileHeight >= verticalStep! - headerHeight) {
+        multiDayEventTile = scope.tileComponents.moreEventsTile ?? Container();
+        children.add(
+          LayoutId(
+            id: i,
+            child: multiDayEventTile,
+          ),
+        );
+        break;
+      } else {
+        multiDayEventTile = scope.tileComponents.multiDayEventTileBuilder?.call(
+              event,
+              tileConfiguration,
+              rescheduleDateRange ?? visibleDateRange,
+              horizontalStep,
+              horizontalStepDuration,
+              verticalStepDuration,
+              verticalStep == null ? 0 : verticalStep! - headerHeight,
+            ) ??
+            MultiDayEventGestureDetector(
+              event: event,
+              rescheduleDateRange: rescheduleDateRange ?? visibleDateRange,
+              horizontalStep: horizontalStep,
+              horizontalStepDuration: horizontalStepDuration,
+              verticalStep: verticalStep,
+              verticalStepDuration: verticalStepDuration,
+              tileConfiguration: tileConfiguration,
+            );
+        children.add(
+          LayoutId(
+            id: i,
+            child: multiDayEventTile,
+          ),
+        );
+      }
     }
 
     return CustomMultiChildLayout(
@@ -127,7 +142,7 @@ class MultiDayEventGroupWidget<T> extends StatelessWidget {
         events: multiDayEventGroup.events,
         visibleDateRange: visibleDateRange,
         multiDayTileHeight: multiDayTileHeight,
-        verticalStep: verticalStep ?? 0,
+        verticalStep: verticalStep == null ? 0 : verticalStep! - headerHeight,
       ),
       children: children,
     );

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kalender/src/models/calendar/calendar_components.dart';
-
 import 'package:kalender/src/models/calendar/calendar_controller.dart';
 import 'package:kalender/src/models/calendar/calendar_event_controller.dart';
 import 'package:kalender/src/models/calendar/calendar_functions.dart';
 import 'package:kalender/src/models/calendar/calendar_layout_delegates.dart';
 import 'package:kalender/src/models/calendar/calendar_style.dart';
+import 'package:kalender/src/models/calendar/platform_data/web_platform_data.dart'
+    if (dart.library.io) 'package:kalender/src/models/calendar/platform_data/io_platform_data.dart';
 import 'package:kalender/src/models/calendar/view_state/month_view_state.dart';
 import 'package:kalender/src/models/view_configurations/view_configuration_export.dart';
 import 'package:kalender/src/providers/calendar_scope.dart';
@@ -14,9 +15,6 @@ import 'package:kalender/src/type_definitions.dart';
 import 'package:kalender/src/views/month_view/month_view_content.dart';
 import 'package:kalender/src/views/month_view/month_view_header.dart';
 
-import 'package:kalender/src/models/calendar/platform_data/web_platform_data.dart'
-    if (dart.library.io) 'package:kalender/src/models/calendar/platform_data/io_platform_data.dart';
-
 class MonthView<T> extends StatefulWidget {
   const MonthView({
     super.key,
@@ -24,12 +22,14 @@ class MonthView<T> extends StatefulWidget {
     required this.eventsController,
     required this.monthViewConfiguration,
     required this.multiDayTileBuilder,
+    required this.headerHeight,
     this.components,
     this.style,
     this.functions,
     this.layoutDelegates,
     this.multiDayEventTileBuilder,
   });
+  final double headerHeight;
 
   /// The [CalendarController] used to control the view.
   final CalendarController<T> controller;
@@ -61,8 +61,7 @@ class MonthView<T> extends StatefulWidget {
   State<MonthView<T>> createState() => _MonthViewState<T>();
 }
 
-class _MonthViewState<T> extends State<MonthView<T>>
-    with SingleTickerProviderStateMixin {
+class _MonthViewState<T> extends State<MonthView<T>> with SingleTickerProviderStateMixin {
   late MonthViewState _viewState;
 
   @override
@@ -92,14 +91,14 @@ class _MonthViewState<T> extends State<MonthView<T>>
               multiDayEventTileBuilder: widget.multiDayEventTileBuilder,
             ),
             platformData: PlatformData(),
-            layoutDelegates:
-                widget.layoutDelegates ?? CalendarLayoutDelegates(),
+            layoutDelegates: widget.layoutDelegates ?? CalendarLayoutDelegates(),
             child: Column(
               children: <Widget>[
                 MonthViewHeader<T>(
                   viewConfiguration: widget.monthViewConfiguration,
                 ),
                 MonthViewContent<T>(
+                  headerHeight: widget.headerHeight,
                   viewConfiguration: widget.monthViewConfiguration,
                   controller: widget.controller,
                 ),
