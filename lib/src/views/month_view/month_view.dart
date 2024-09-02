@@ -87,6 +87,7 @@ class _MonthViewState<T> extends State<MonthView<T>> with SingleTickerProviderSt
             eventsController: widget.eventsController,
             functions: widget.functions ?? CalendarEventHandlers<T>(),
             tileComponents: CalendarTileComponents(
+              moreEventsTile: widget.components?.moreEventsTile,
               multiDayTileBuilder: widget.multiDayTileBuilder,
               multiDayEventTileBuilder: widget.multiDayEventTileBuilder,
             ),

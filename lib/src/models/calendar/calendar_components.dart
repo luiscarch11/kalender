@@ -46,6 +46,7 @@ class CalendarTileComponents<T> {
 class CalendarComponents {
   CalendarComponents({
     this.calendarHeaderBuilder,
+    this.moreEventsTile,
     DayHeaderBuilder? dayHeaderBuilder,
     WeekNumberBuilder? weekNumberBuilder,
     HourLinesBuilder? hourLineBuilder,
@@ -74,6 +75,8 @@ class CalendarComponents {
     this.calendarZoomDetector = calendarZoomDetector ?? _defaultCalendarZoomDetector;
     this.timelineTextBuilder = timelineTextBuilder ?? _defaultTimelineTextBuilder;
   }
+
+  final Widget? moreEventsTile;
 
   /// This builder is used to build the widget displayed in the calendar's header.
   late CalendarHeaderBuilder? calendarHeaderBuilder;
