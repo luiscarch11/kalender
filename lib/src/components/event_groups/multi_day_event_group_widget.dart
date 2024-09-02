@@ -100,7 +100,7 @@ class MultiDayEventGroupWidget<T> extends StatelessWidget {
         continuesAfter: continuesAfter,
       );
       late Widget multiDayEventTile;
-      if (verticalStep != null && i * multiDayTileHeight >= verticalStep! - headerHeight) {
+      if (verticalStep != null && i * multiDayTileHeight - multiDayTileHeight >= verticalStep! - headerHeight) {
         multiDayEventTile = scope.tileComponents.moreEventsTile ?? Container();
         children.add(
           LayoutId(
