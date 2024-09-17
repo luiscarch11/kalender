@@ -43,6 +43,7 @@ class CalendarTileComponents<T> {
 class CalendarComponents {
   CalendarComponents({
     this.calendarHeaderBuilder,
+    this.singleDayHeaderBuilder,
     DayHeaderBuilder? dayHeaderBuilder,
     WeekNumberBuilder? weekNumberBuilder,
     HourLinesBuilder? hourLineBuilder,
@@ -61,22 +62,17 @@ class CalendarComponents {
     this.weekNumberBuilder = weekNumberBuilder ?? _defaultWeekNumberBuilder;
     this.hourLineBuilder = hourLineBuilder ?? _defaultHourLineBuilder;
     this.timelineBuilder = timelineBuilder ?? _defaultTimelineBuilder;
-    this.daySeparatorBuilder =
-        daySeparatorBuilder ?? _defaultDaySeparatorBuilder;
-    this.timeIndicatorBuilder =
-        timeIndicatorBuilder ?? _defaultTimeIndicatorBuilder;
+    this.daySeparatorBuilder = daySeparatorBuilder ?? _defaultDaySeparatorBuilder;
+    this.timeIndicatorBuilder = timeIndicatorBuilder ?? _defaultTimeIndicatorBuilder;
     this.monthGridBuilder = monthGridBuilder ?? _defaultMonthGridBuilder;
-    this.monthCellHeaderBuilder =
-        monthCellHeaderBuilder ?? _defaultMonthCellHeaderBuilder;
+    this.monthCellHeaderBuilder = monthCellHeaderBuilder ?? _defaultMonthCellHeaderBuilder;
     this.monthHeaderBuilder = monthHeaderBuilder ?? _defaultMonthHeaderBuilder;
     this.tileHandleBuilder = tileHandleBuilder ?? _defaultTileHandleBuilder;
-    this.scheduleMonthHeaderBuilder =
-        scheduleMonthHeaderBuilder ?? _defaultScheduleMonthHeaderBuilder;
-    this.calendarZoomDetector =
-        calendarZoomDetector ?? _defaultCalendarZoomDetector;
-    this.timelineTextBuilder =
-        timelineTextBuilder ?? _defaultTimelineTextBuilder;
+    this.scheduleMonthHeaderBuilder = scheduleMonthHeaderBuilder ?? _defaultScheduleMonthHeaderBuilder;
+    this.calendarZoomDetector = calendarZoomDetector ?? _defaultCalendarZoomDetector;
+    this.timelineTextBuilder = timelineTextBuilder ?? _defaultTimelineTextBuilder;
   }
+  final Widget Function(DateTime date)? singleDayHeaderBuilder;
 
   /// This builder is used to build the widget displayed in the calendar's header.
   late CalendarHeaderBuilder? calendarHeaderBuilder;

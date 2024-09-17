@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kalender/src/providers/calendar_scope.dart';
 import 'package:kalender/src/components/event_groups/multi_day_event_group_widget.dart';
 import 'package:kalender/src/components/general/material_header/material_header.dart';
 import 'package:kalender/src/components/gesture_detectors/multi_day_header_gesture_detector.dart';
 import 'package:kalender/src/models/event_group_controllers/multi_day_event_group.dart';
 import 'package:kalender/src/models/view_configurations/multi_day_configurations/multi_day_view_configuration.dart';
+import 'package:kalender/src/providers/calendar_scope.dart';
 import 'package:kalender/src/providers/calendar_style.dart';
 
 class MultiDayHeader<T> extends StatelessWidget {
@@ -72,12 +72,9 @@ class MultipleDayHeader<T> extends StatelessWidget {
     final components = CalendarStyleProvider.of(context).components;
 
     final weekNumber = SizedBox(
-      width: viewConfiguration.timelineWidth +
-          viewConfiguration.daySeparatorLeftOffset,
+      width: viewConfiguration.timelineWidth + viewConfiguration.daySeparatorLeftOffset,
       child: Center(
-        child: viewConfiguration.showWeekNumber
-            ? components.weekNumberBuilder(visibleDateTimeRange)
-            : null,
+        child: viewConfiguration.showWeekNumber ? components.weekNumberBuilder(visibleDateTimeRange) : null,
       ),
     );
 
@@ -133,8 +130,7 @@ class SingleDayHeader<T> extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         SizedBox(
-          width: viewConfiguration.timelineWidth +
-              viewConfiguration.daySeparatorLeftOffset,
+          width: viewConfiguration.timelineWidth + viewConfiguration.daySeparatorLeftOffset,
           child: components.dayHeaderBuilder(
             visibleDateTimeRange.start,
             null,
@@ -144,8 +140,7 @@ class SingleDayHeader<T> extends StatelessWidget {
     );
 
     late final dayHeaderSpacer = SizedBox(
-      width: viewConfiguration.timelineWidth +
-          viewConfiguration.daySeparatorLeftOffset,
+      width: viewConfiguration.timelineWidth + viewConfiguration.daySeparatorLeftOffset,
     );
 
     final multiDayEventsHeader = AnimatedMultiDayEventsHeader<T>(
@@ -155,13 +150,17 @@ class SingleDayHeader<T> extends StatelessWidget {
 
     final showDayHeader = viewConfiguration.showDayHeader;
     final showMultiDayEvents = viewConfiguration.showMultiDayHeader;
+    final singleDayHeader = components.singleDayHeaderBuilder;
 
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         if (showDayHeader) dateHeader,
         if (!showDayHeader && showMultiDayEvents) dayHeaderSpacer,
-        if (showMultiDayEvents) Expanded(child: multiDayEventsHeader),
+        if (singleDayHeader != null)
+          singleDayHeader.call(
+            visibleDateTimeRange.start,
+          ),
       ],
     );
   }
@@ -182,14 +181,12 @@ class AnimatedMultiDayEventsHeader<T> extends StatelessWidget {
     final scope = CalendarScope.of<T>(context);
     return LayoutBuilder(
       builder: (context, constraints) {
-        final horizontalStep =
-            constraints.maxWidth / viewConfiguration.numberOfDays;
+        final horizontalStep = constraints.maxWidth / viewConfiguration.numberOfDays;
 
         return ListenableBuilder(
           listenable: scope.eventsController,
           builder: (context, child) {
-            final events =
-                scope.eventsController.getMultiDayEventsFromDateRange(
+            final events = scope.eventsController.getMultiDayEventsFromDateRange(
               scope.state.visibleDateTimeRangeNotifier.value,
             );
 
@@ -199,8 +196,7 @@ class AnimatedMultiDayEventsHeader<T> extends StatelessWidget {
 
             final selectedEvent = scope.eventsController.selectedEvent;
 
-            final horizontalStepDuration =
-                viewConfiguration.horizontalStepDuration;
+            final horizontalStepDuration = viewConfiguration.horizontalStepDuration;
             final multiDayTileHeight = viewConfiguration.multiDayTileHeight;
 
             return AnimatedSize(
@@ -208,14 +204,12 @@ class AnimatedMultiDayEventsHeader<T> extends StatelessWidget {
               duration: const Duration(milliseconds: 200),
               child: SizedBox(
                 height: viewConfiguration.multiDayTileHeight *
-                    (multiDayEventGroup.maxNumberOfStackedEvents +
-                        (viewConfiguration.createMultiDayEvents ? 1 : 0)),
+                    (multiDayEventGroup.maxNumberOfStackedEvents + (viewConfiguration.createMultiDayEvents ? 1 : 0)),
                 child: Stack(
                   clipBehavior: Clip.antiAlias,
                   children: [
                     MultiDayHeaderGestureDetector<T>(
-                      createMultiDayEvents:
-                          viewConfiguration.createMultiDayEvents,
+                      createMultiDayEvents: viewConfiguration.createMultiDayEvents,
                       createEventTrigger: viewConfiguration.createEventTrigger,
                       visibleDateRange: visibleDateRange,
                       horizontalStep: horizontalStep,
@@ -228,13 +222,11 @@ class AnimatedMultiDayEventsHeader<T> extends StatelessWidget {
                       isChanging: false,
                       multiDayTileHeight: multiDayTileHeight,
                     ),
-                    if (selectedEvent != null &&
-                        scope.eventsController.selectedEvent!.isMultiDayEvent)
+                    if (selectedEvent != null && scope.eventsController.selectedEvent!.isMultiDayEvent)
                       ListenableBuilder(
                         listenable: scope.eventsController.selectedEvent!,
                         builder: (context, child) {
-                          final multiDayEventGroup =
-                              MultiDayEventGroup.fromEvents(
+                          final multiDayEventGroup = MultiDayEventGroup.fromEvents(
                             events: [selectedEvent],
                           );
 
