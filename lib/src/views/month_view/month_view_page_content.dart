@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:kalender/src/extensions.dart';
-import 'package:kalender/src/models/calendar/calendar_controller.dart';
-import 'package:kalender/src/providers/calendar_scope.dart';
 import 'package:kalender/src/components/event_groups/multi_day_event_group_widget.dart';
 import 'package:kalender/src/components/gesture_detectors/multi_day_header_gesture_detector.dart';
+import 'package:kalender/src/extensions.dart';
+import 'package:kalender/src/models/calendar/calendar_controller.dart';
 import 'package:kalender/src/models/event_group_controllers/multi_day_event_group.dart';
 import 'package:kalender/src/models/view_configurations/month_configurations/month_view_configuration.dart';
+import 'package:kalender/src/providers/calendar_scope.dart';
 import 'package:kalender/src/providers/calendar_style.dart';
 
 class MonthViewPageContent<T> extends StatelessWidget {
@@ -41,14 +41,10 @@ class MonthViewPageContent<T> extends StatelessWidget {
                   Builder(
                     builder: (context) {
                       // Calculate the start date.
-                      final start = visibleDateRange.start.add(
-                        Duration(days: c * 7),
-                      );
+                      final start = visibleDateRange.start.addDays(c * 7);
 
                       // Calculate the end date.
-                      final end = visibleDateRange.start.add(
-                        Duration(days: (c * 7) + 7),
-                      );
+                      final end = visibleDateRange.start.addDays((c * 7) + 7);
 
                       // Create a date range from the start and end dates.
                       final weekDateRange = DateTimeRange(
@@ -103,9 +99,7 @@ class MonthViewPageContent<T> extends StatelessWidget {
                         children: <Widget>[
                           for (int r = 0; r < 7; r++)
                             components.monthCellHeaderBuilder(
-                              visibleDateRange.start.add(
-                                Duration(days: (c * 7) + r),
-                              ),
+                              visibleDateRange.start.addDays((c * 7) + r),
                               (date) => scope.functions.onDateTapped?.call(date),
                             ),
                         ],

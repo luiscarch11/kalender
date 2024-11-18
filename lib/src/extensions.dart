@@ -35,19 +35,17 @@ extension DateTimeRangeExtensions on DateTimeRange {
     //   Use the localEndOfDate in utc.
     // else
     //   Use the localEndOfDate endOfDay in utc.
-    final utcEndOfDate = isLocalEndOfDateStartOfDay
-        ? localEndOfDate.toUtc()
-        : localEndOfDate.endOfDay.toUtc();
+    final utcEndOfDate = isLocalEndOfDateStartOfDay ? localEndOfDate.toUtc() : localEndOfDate.endOfDay.toUtc();
 
     // Calculate the dayDifference.
     final dayDifference = utcEndOfDate.difference(utcStartOfDate).inDays;
 
     final dates = <DateTime>[];
     for (var i = 0; i < dayDifference; i++) {
-      dates.add(localStartOfDate.add(Duration(days: i)));
+      dates.add(localStartOfDate.addDays(i));
     }
 
-    return dates;
+    return dates.toSet().toList();
   }
 
   /// The number of years spanned by the [DateTimeRange].
@@ -59,8 +57,7 @@ extension DateTimeRangeExtensions on DateTimeRange {
   }
 
   /// The center [DateTime] of the [DateTimeRange].
-  DateTime get centerDateTime =>
-      start.add(Duration(days: (dayDifference / 2).floor()));
+  DateTime get centerDateTime => start.addDays((dayDifference / 2).floor());
 
   /// The visible month of the [DateTimeRange].
   DateTime get visibleMonth {
@@ -90,8 +87,7 @@ extension DateTimeRangeExtensions on DateTimeRange {
 
     // This is custom so that if the user sets firstDayOfWeek to
     // monday, sunday or saturday we only show one week number.
-    final showOnlyOneWeekNumber = isSingleWeek &&
-        (start.weekday == 1 || start.weekday == 6 || start.weekday == 7);
+    final showOnlyOneWeekNumber = isSingleWeek && (start.weekday == 1 || start.weekday == 6 || start.weekday == 7);
 
     if (!showOnlyOneWeekNumber) {
       if (datesSpanned.first.weekNumber == datesSpanned.last.weekNumber) {
@@ -200,12 +196,10 @@ extension DateTimeExtensions on DateTime {
       );
 
   /// Checks if the [DateTime] is the same day as the calling object.
-  bool isSameDay(DateTime date) =>
-      year == date.year && month == date.month && day == date.day;
+  bool isSameDay(DateTime date) => year == date.year && month == date.month && day == date.day;
 
   /// Checks if the [DateTime] is within the [DateTimeRange].
-  bool isWithin(DateTimeRange range) =>
-      isAfter(range.start) && isBefore(range.end);
+  bool isWithin(DateTimeRange range) => isAfter(range.start) && isBefore(range.end);
 
   /// Checks if the [DateTime] is today.
   bool get isToday => isSameDay(DateTime.now());

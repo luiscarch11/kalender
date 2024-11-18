@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kalender/src/components/event_groups/multi_day_event_group_widget.dart';
 import 'package:kalender/src/components/general/material_header/material_header.dart';
 import 'package:kalender/src/components/gesture_detectors/multi_day_header_gesture_detector.dart';
+import 'package:kalender/src/extensions.dart';
 import 'package:kalender/src/models/event_group_controllers/multi_day_event_group.dart';
 import 'package:kalender/src/models/view_configurations/multi_day_configurations/multi_day_view_configuration.dart';
 import 'package:kalender/src/providers/calendar_scope.dart';
@@ -84,7 +85,7 @@ class MultipleDayHeader<T> extends StatelessWidget {
         ...List.generate(
           viewConfiguration.numberOfDays,
           (index) => components.dayHeaderBuilder(
-            visibleDateTimeRange.start.add(Duration(days: index)),
+            visibleDateTimeRange.start.addDays(index),
             (date) => scope.functions.onDateTapped?.call(date),
           ),
         ),
