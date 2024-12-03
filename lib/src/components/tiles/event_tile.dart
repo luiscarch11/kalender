@@ -28,25 +28,21 @@ class EventGestureDetector<T> extends StatefulWidget {
   final List<DateTime> snapPoints;
 
   @override
-  State<EventGestureDetector<T>> createState() =>
-      _EventGestureDetectorState<T>();
+  State<EventGestureDetector<T>> createState() => _EventGestureDetectorState<T>();
 }
 
 class _EventGestureDetectorState<T> extends State<EventGestureDetector<T>> {
   late final CalendarScope<T> scope = CalendarScope.of<T>(context);
   CalendarEventsController<T> get eventsController => scope.eventsController;
 
-  late final CalendarComponents components =
-      CalendarStyleProvider.of(context).components;
+  late final CalendarComponents components = CalendarStyleProvider.of(context).components;
 
-  MultiDayViewConfiguration get viewConfiguration =>
-      scope.state.viewConfiguration as MultiDayViewConfiguration;
+  MultiDayViewConfiguration get viewConfiguration => scope.state.viewConfiguration as MultiDayViewConfiguration;
 
   List<DateTime> get snapPoints => widget.snapPoints;
 
   Duration get verticalStepDuration => viewConfiguration.verticalStepDuration;
-  Duration get horizontalStepDuration =>
-      viewConfiguration.horizontalStepDuration;
+  Duration get horizontalStepDuration => viewConfiguration.horizontalStepDuration;
   Duration get verticalSnapRange => viewConfiguration.verticalSnapRange;
 
   bool get snapToTimeIndicator => viewConfiguration.timeIndicatorSnapping;
@@ -116,8 +112,7 @@ class _EventGestureDetectorState<T> extends State<EventGestureDetector<T>> {
 
         // Get the onLongPressStart, onLongPressMoveUpdate, and onLongPressEnd functions.
         void Function(LongPressStartDetails details)? onLongPressStart;
-        void Function(LongPressMoveUpdateDetails details)?
-            onLongPressMoveUpdate;
+        void Function(LongPressMoveUpdateDetails details)? onLongPressMoveUpdate;
         Future<void> Function(LongPressEndDetails details)? onLongPressEnd;
         if (useMobileGestures &&
             !eventsController.isResizingBottom &&
@@ -133,9 +128,7 @@ class _EventGestureDetectorState<T> extends State<EventGestureDetector<T>> {
         Widget? resizeBottomWidget;
 
         // Check if the event can be modified and if the event is being rescheduled.
-        if (widget.event.canModify &&
-            !eventsController.isRescheduling &&
-            canResize) {
+        if (widget.event.canModify && !eventsController.isRescheduling && canResize) {
           if (useDesktopGestures) {
             resizeBottomWidget = _resizeBottomDesktopWidget();
             resizeTopWidget = _resizeTopDesktopWidget();
@@ -159,7 +152,6 @@ class _EventGestureDetectorState<T> extends State<EventGestureDetector<T>> {
             }
           }
         }
-
         return MouseRegion(
           cursor: SystemMouseCursors.click,
           child: GestureDetector(
@@ -169,8 +161,7 @@ class _EventGestureDetectorState<T> extends State<EventGestureDetector<T>> {
             onPanEnd: (details) async => await onPanEnd?.call(details),
             onLongPressStart: onLongPressStart,
             onLongPressMoveUpdate: onLongPressMoveUpdate,
-            onLongPressEnd: (details) async =>
-                await onLongPressEnd?.call(details),
+            onLongPressEnd: (details) async => await onLongPressEnd?.call(details),
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -292,8 +283,7 @@ class _EventGestureDetectorState<T> extends State<EventGestureDetector<T>> {
     );
 
     if (viewConfiguration.customStartEndHour) {
-      if (newStart.hour >= startHour &&
-          newStart.isSameDay(initialDateTimeRange.start)) {
+      if (newStart.hour >= startHour && newStart.isSameDay(initialDateTimeRange.start)) {
         // Reschedule the event's start.
         eventsController.rescheduleSelectedEventStart(
           deltaDuration,
@@ -356,8 +346,7 @@ class _EventGestureDetectorState<T> extends State<EventGestureDetector<T>> {
     );
 
     if (viewConfiguration.customStartEndHour) {
-      if (newEnd.hour <= endHour &&
-          newEnd.isSameDay(initialDateTimeRange.end)) {
+      if (newEnd.hour <= endHour && newEnd.isSameDay(initialDateTimeRange.end)) {
         // Reschedule the event's end.
         eventsController.rescheduleSelectedEventEnd(
           deltaDuration,
@@ -412,22 +401,17 @@ class _EventGestureDetectorState<T> extends State<EventGestureDetector<T>> {
     var horizontalSteps = 0;
     horizontalSteps = (cursorOffset.dx / widget.horizontalStep).round();
 
-    if (verticalSteps == currentVerticalSteps &&
-        horizontalSteps == currentHorizontalSteps) {
+    if (verticalSteps == currentVerticalSteps && horizontalSteps == currentHorizontalSteps) {
       return;
     }
 
     final horizontalDurationDelta = horizontalStepDuration * horizontalSteps;
 
     // Calculate the new start time.
-    var newStart = initialDateTimeRange.start
-        .add(horizontalDurationDelta)
-        .add(verticalStepDuration * verticalSteps);
+    var newStart = initialDateTimeRange.start.add(horizontalDurationDelta).add(verticalStepDuration * verticalSteps);
 
     // Calculate the new end time.
-    var newEnd = initialDateTimeRange.end
-        .add(horizontalDurationDelta)
-        .add(verticalStepDuration * verticalSteps);
+    var newEnd = initialDateTimeRange.end.add(horizontalDurationDelta).add(verticalStepDuration * verticalSteps);
 
     final now = DateTime.now();
     if (snapToTimeIndicator) {
@@ -459,19 +443,16 @@ class _EventGestureDetectorState<T> extends State<EventGestureDetector<T>> {
       end: newEnd,
     );
 
-    final startIsWithin =
-        newDateTimeRange.start.isWithin(widget.visibleDateTimeRange);
+    final startIsWithin = newDateTimeRange.start.isWithin(widget.visibleDateTimeRange);
 
-    final endIsWithin =
-        newDateTimeRange.end.isWithin(widget.visibleDateTimeRange);
+    final endIsWithin = newDateTimeRange.end.isWithin(widget.visibleDateTimeRange);
 
     /// TODO: Fix the bug where dragging to the end of the day locks event to that day.
     if (startIsWithin || endIsWithin) {
       // Check if custom start and end hours are used.
       if (viewConfiguration.customStartEndHour) {
         if (newDateTimeRange.start.isSameDay(newDateTimeRange.end)) {
-          if (newDateTimeRange.start.hour >= startHour &&
-              newDateTimeRange.end.hour <= endHour) {
+          if (newDateTimeRange.start.hour >= startHour && newDateTimeRange.end.hour <= endHour) {
             // Calculate the deltaDuration.
             final deltaDuration = newStart.difference(
               eventsController.selectedEvent!.start,

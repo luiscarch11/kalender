@@ -227,7 +227,7 @@ class CalendarView<T> extends StatelessWidget {
   final ScheduleTileBuilder<T>? scheduleTileBuilder;
 
   final EventTileBuilder? eventTileBuilder;
-  final MultiDayEventTileBuilder? multiDayEventTileBuilder;
+  final MultiDayEventTileBuilder<T>? multiDayEventTileBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -239,8 +239,7 @@ class CalendarView<T> extends StatelessWidget {
         multiDayTileBuilder: multiDayTileBuilder!,
         components: components,
         functions: eventHandlers,
-        multiDayViewConfiguration:
-            viewConfiguration as MultiDayViewConfiguration,
+        multiDayViewConfiguration: viewConfiguration as MultiDayViewConfiguration,
         style: style,
         layoutDelegates: layoutDelegates,
         eventTileBuilder: eventTileBuilder,
@@ -268,8 +267,7 @@ class CalendarView<T> extends StatelessWidget {
         eventsController: eventsController,
         components: components,
         functions: eventHandlers,
-        scheduleViewConfiguration:
-            viewConfiguration as ScheduleViewConfiguration,
+        scheduleViewConfiguration: viewConfiguration as ScheduleViewConfiguration,
         style: style,
         layoutDelegates: layoutDelegates,
         scheduleTileBuilder: scheduleTileBuilder!,

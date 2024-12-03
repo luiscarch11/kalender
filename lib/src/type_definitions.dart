@@ -117,8 +117,7 @@ typedef ScheduleTileBuilder<T extends Object?> = Widget Function(
 /// The [EventLayoutDelegateBuilder] is used to calculate the layout of the tiles displayed on a day.
 ///
 /// The typedef is used to create a function that returns a [EventLayoutDelegateBuilder].
-typedef EventLayoutDelegateBuilder<T extends Object?>
-    = EventGroupLayoutDelegate<T> Function({
+typedef EventLayoutDelegateBuilder<T extends Object?> = EventGroupLayoutDelegate<T> Function({
   required List<CalendarEvent<T>> events,
   required DateTime date,
   required double heightPerMinute,
@@ -129,8 +128,7 @@ typedef EventLayoutDelegateBuilder<T extends Object?>
 /// The [EventLayoutDelegateBuilder] is used to calculate the layout of the tiles displayed on a day.
 ///
 /// The typedef is used to create a function that returns a [EventLayoutDelegateBuilder].
-typedef MultiDayEventLayoutDelegateBuilder<T extends Object?>
-    = MultiDayEventsLayoutDelegate<T> Function({
+typedef MultiDayEventLayoutDelegateBuilder<T extends Object?> = MultiDayEventsLayoutDelegate<T> Function({
   required DateTimeRange visibleDateRange,
   required double multiDayTileHeight,
   required List<CalendarEvent<T>> events,
@@ -148,7 +146,7 @@ typedef EventTileBuilder<T extends Object?> = Widget Function(
 );
 
 typedef MultiDayEventTileBuilder<T extends Object?> = Widget Function(
-  CalendarEvent event,
+  CalendarEvent<T> event,
   MultiDayTileConfiguration configuration,
   DateTimeRange rescheduleDateRange,
   double horizontalStep,

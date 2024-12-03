@@ -32,12 +32,10 @@ class MultiDayEventGestureDetector<T> extends StatefulWidget {
   final double? verticalStep;
 
   @override
-  State<MultiDayEventGestureDetector<T>> createState() =>
-      _MultiDayEventGestureDetectorState<T>();
+  State<MultiDayEventGestureDetector<T>> createState() => _MultiDayEventGestureDetectorState<T>();
 }
 
-class _MultiDayEventGestureDetectorState<T>
-    extends State<MultiDayEventGestureDetector<T>> {
+class _MultiDayEventGestureDetectorState<T> extends State<MultiDayEventGestureDetector<T>> {
   CalendarScope<T> get scope => CalendarScope.of<T>(context);
   CalendarEventsController<T> get eventsController => scope.eventsController;
   CalendarEventHandlers<T> get functions => scope.functions;
@@ -184,34 +182,25 @@ class _MultiDayEventGestureDetectorState<T>
 
     // Calculate the horizontal and vertical steps.
     final horizontalSteps = (cursorOffset.dx / widget.horizontalStep).round();
-    final verticalSteps = widget.verticalStep != null
-        ? (cursorOffset.dy / widget.verticalStep!).round()
-        : 0;
+    final verticalSteps = widget.verticalStep != null ? (cursorOffset.dy / widget.verticalStep!).round() : 0;
 
     // If the steps are the same as the current steps, return.
     if (widget.verticalStep != null &&
         currentHorizontalSteps == horizontalSteps &&
         currentVerticalSteps == verticalSteps) {
       return;
-    } else if (widget.verticalStep == null &&
-        currentHorizontalSteps == horizontalSteps) {
+    } else if (widget.verticalStep == null && currentHorizontalSteps == horizontalSteps) {
       return;
     }
 
     // Calculate the duration deltas.
-    final horizontalDurationDelta =
-        widget.horizontalStepDuration * horizontalSteps;
-    final verticalDurationDelta =
-        (widget.verticalStepDuration ?? Duration.zero) * verticalSteps;
+    final horizontalDurationDelta = widget.horizontalStepDuration * horizontalSteps;
+    final verticalDurationDelta = (widget.verticalStepDuration ?? Duration.zero) * verticalSteps;
 
     // Calculate the new date time range.
     final newDateTimeRange = DateTimeRange(
-      start: initialDateTimeRange.start
-          .add(horizontalDurationDelta)
-          .add(verticalDurationDelta),
-      end: initialDateTimeRange.end
-          .add(horizontalDurationDelta)
-          .add(verticalDurationDelta),
+      start: initialDateTimeRange.start.add(horizontalDurationDelta).add(verticalDurationDelta),
+      end: initialDateTimeRange.end.add(horizontalDurationDelta).add(verticalDurationDelta),
     );
 
     // Calculate the delta duration.
@@ -370,8 +359,7 @@ class _MultiDayEventGestureDetectorState<T>
           behavior: HitTestBehavior.translucent,
           onHorizontalDragStart: _onHorizontalDragStartRight,
           onHorizontalDragUpdate: _onHorizontalDragUpdateRight,
-          onHorizontalDragEnd: (details) async =>
-              await _onHorizontalDragEnd(details),
+          onHorizontalDragEnd: (details) async => await _onHorizontalDragEnd(details),
         ),
       ),
     );
