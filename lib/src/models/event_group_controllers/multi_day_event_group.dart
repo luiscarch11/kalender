@@ -27,9 +27,6 @@ class MultiDayEventGroup<T> {
     final sortedEvents = events.toList()
       ..sort(
         (a, b) => a.start.compareTo(b.start),
-      )
-      ..sort(
-        (a, b) => b.end.compareTo(a.end),
       );
 
     return MultiDayEventGroup<T>(
