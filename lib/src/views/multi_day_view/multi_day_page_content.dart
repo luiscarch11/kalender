@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:kalender/src/models/calendar/calendar_event.dart';
-import 'package:kalender/src/models/calendar/view_state/multi_day_view_state.dart';
-import 'package:kalender/src/providers/calendar_scope.dart';
-import 'package:kalender/src/components/gesture_detectors/multi_day_page_gesture_detector.dart';
 import 'package:kalender/src/components/event_groups/event_group_widget.dart';
+import 'package:kalender/src/components/gesture_detectors/multi_day_page_gesture_detector.dart';
 import 'package:kalender/src/extensions.dart';
 import 'package:kalender/src/models/calendar/calendar_controller.dart';
+import 'package:kalender/src/models/calendar/calendar_event.dart';
 import 'package:kalender/src/models/calendar/calendar_event_controller.dart';
+import 'package:kalender/src/models/calendar/view_state/multi_day_view_state.dart';
 import 'package:kalender/src/models/event_group_controllers/event_group_controller.dart';
 import 'package:kalender/src/models/view_configurations/multi_day_configurations/multi_day_view_configuration.dart';
+import 'package:kalender/src/providers/calendar_scope.dart';
 import 'package:kalender/src/providers/calendar_style.dart';
 
 class MultiDayPageContent<T> extends StatelessWidget {
@@ -35,23 +35,16 @@ class MultiDayPageContent<T> extends StatelessWidget {
       builder: (context, constraints) {
         final visibleDates = visibleDateRange.datesSpanned;
 
-        final dayWidth = (((constraints.maxWidth -
-                        viewConfiguration.daySeparatorLeftOffset) /
-                    visibleDates.length) -
-                1)
+        final dayWidth = (((constraints.maxWidth - viewConfiguration.daySeparatorLeftOffset) / visibleDates.length) - 1)
             .truncateToDouble();
 
-        final daySeparatorWidth =
-            dayWidth * visibleDates.length + (visibleDates.length + 1);
+        final daySeparatorWidth = dayWidth * visibleDates.length + (visibleDates.length + 1);
 
-        final heightPerMinute =
-            (scope.state as MultiDayViewState).heightPerMinute.value;
+        final heightPerMinute = (scope.state as MultiDayViewState).heightPerMinute.value;
 
-        final verticalStep =
-            heightPerMinute * viewConfiguration.verticalStepDuration.inMinutes;
+        final verticalStep = heightPerMinute * viewConfiguration.verticalStepDuration.inMinutes;
 
-        final newEventVerticalStep =
-            heightPerMinute * viewConfiguration.newEventDuration.inMinutes;
+        final newEventVerticalStep = heightPerMinute * viewConfiguration.newEventDuration.inMinutes;
 
         return ListenableBuilder(
           listenable: scope.eventsController,
@@ -77,9 +70,8 @@ class MultiDayPageContent<T> extends StatelessWidget {
             );
 
             // Generate the list of tile groups for the selected event. (if applicable)
-            final selectedEvent = showSelectedTile(scope.eventsController)
-                ? scope.eventsController.selectedEvent
-                : null;
+            final selectedEvent =
+                showSelectedTile(scope.eventsController) ? scope.eventsController.selectedEvent : null;
 
             // Generate the list of snap points.
             final snapPoints = viewConfiguration.eventSnapping
@@ -123,8 +115,7 @@ class MultiDayPageContent<T> extends StatelessWidget {
               changingEventGroups = ListenableBuilder(
                 listenable: selectedEvent,
                 builder: (context, child) {
-                  final selectedEventWidgetGroups =
-                      EventGroupController<T>().generateTileGroups(
+                  final selectedEventWidgetGroups = EventGroupController<T>().generateTileGroups(
                     visibleDates: visibleDates,
                     events: [selectedEvent],
                   );
@@ -152,13 +143,13 @@ class MultiDayPageContent<T> extends StatelessWidget {
             Widget? timeIndicator;
             if (DateTime.now().isWithin(visibleDateRange)) {
               timeIndicator = Positioned(
-                left: left(
-                  visibleDates.indexOf(DateTime.now().startOfDay),
-                  dayWidth,
-                ),
+                // left: left(
+                //   visibleDates.indexOf(DateTime.now().startOfDay),
+                //   dayWidth,
+                // ),
                 top: 0,
                 bottom: 0,
-                width: dayWidth,
+                // width: dayWidth,
                 child: components.timeIndicatorBuilder.call(
                   heightPerMinute,
                   dayWidth,
@@ -215,14 +206,12 @@ class MultiDayPageContent<T> extends StatelessWidget {
   }
 
   double left(int dayIndex, double dayWidth) {
-    return ((dayIndex * dayWidth + (dayIndex + 1)) +
-        viewConfiguration.daySeparatorLeftOffset);
+    return ((dayIndex * dayWidth + (dayIndex + 1)) + viewConfiguration.daySeparatorLeftOffset);
   }
 
   bool showSelectedTile(CalendarEventsController<T> controller) {
     if (viewConfiguration.showMultiDayHeader) {
-      return controller.hasChangingEvent &&
-          !controller.selectedEvent!.isMultiDayEvent;
+      return controller.hasChangingEvent && !controller.selectedEvent!.isMultiDayEvent;
     } else {
       return controller.hasChangingEvent;
     }

@@ -33,8 +33,7 @@ class MultiDayContent<T> extends StatelessWidget {
         state.pageHeight = pageHeight;
 
         // The height of the content after clipping.
-        final clippedHeight = (viewConfiguration.endHour * hourHeight) -
-            viewConfiguration.startHour * hourHeight;
+        final clippedHeight = (viewConfiguration.endHour * hourHeight) - viewConfiguration.startHour * hourHeight;
 
         return components.calendarZoomDetector(
           controller,
@@ -63,8 +62,7 @@ class MultiDayContent<T> extends StatelessWidget {
                   clipBehavior: Clip.none,
                   onPageChanged: (index) {
                     // Calculate the new visible date range.
-                    final newVisibleDateTimeRange =
-                        viewConfiguration.calculateVisibleDateRangeForIndex(
+                    final newVisibleDateTimeRange = viewConfiguration.calculateVisibleDateRangeForIndex(
                       index: index,
                       calendarStart: scope.state.adjustedDateTimeRange.start,
                     );
@@ -82,8 +80,7 @@ class MultiDayContent<T> extends StatelessWidget {
                   },
                   itemBuilder: (context, index) {
                     // Calculate the visible date range for the page at the given index.
-                    final visibleDateRange =
-                        viewConfiguration.calculateVisibleDateRangeForIndex(
+                    final visibleDateRange = viewConfiguration.calculateVisibleDateRangeForIndex(
                       index: index,
                       calendarStart: scope.state.adjustedDateTimeRange.start,
                     );
