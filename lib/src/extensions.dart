@@ -25,20 +25,18 @@ extension DateTimeRangeExtensions on DateTimeRange {
     if (start == end) return [start.startOfDay];
 
     final localStartOfDate = start.startOfDay;
-    final utcStartOfDate = localStartOfDate.toUtc();
-
     final localEndOfDate = end.startOfDay;
-    // Check if the local end date is the startOfDay.
-    final isLocalEndOfDateStartOfDay = localEndOfDate.toUtc() == end.toUtc();
 
-    // If the localEndDate is the startOfDay
-    //   Use the localEndOfDate in utc.
-    // else
-    //   Use the localEndOfDate endOfDay in utc.
-    final utcEndOfDate = isLocalEndOfDateStartOfDay ? localEndOfDate.toUtc() : localEndOfDate.endOfDay.toUtc();
+    // Check if the end time is exactly at the start of the day.
+    final isEndAtStartOfDay = end.hour == 0 && end.minute == 0 && end.second == 0 && end.millisecond == 0;
 
-    // Calculate the dayDifference.
-    final dayDifference = utcEndOfDate.difference(utcStartOfDate).inDays;
+    // Determine the actual end date to use for calculation.
+    // If the end is at the start of a day, use that day.
+    // Otherwise, include the full day by using the next day.
+    final effectiveEndDate = isEndAtStartOfDay ? localEndOfDate : localEndOfDate.addDays(1);
+
+    // Calculate the day difference using normalized local dates (avoiding DST issues).
+    final dayDifference = _calculateDayDifference(localStartOfDate, effectiveEndDate);
 
     final dates = <DateTime>[];
     for (var i = 0; i < dayDifference; i++) {
@@ -46,6 +44,17 @@ extension DateTimeRangeExtensions on DateTimeRange {
     }
 
     return dates.toSet().toList();
+  }
+
+  /// Calculates the difference in days between two dates using their calendar dates.
+  /// This avoids DST issues by working with normalized dates (year, month, day).
+  int _calculateDayDifference(DateTime start, DateTime end) {
+    // Normalize both dates to midnight to ensure consistent calculation.
+    final normalizedStart = DateTime(start.year, start.month, start.day);
+    final normalizedEnd = DateTime(end.year, end.month, end.day);
+
+    // Calculate the difference in days.
+    return normalizedEnd.difference(normalizedStart).inDays;
   }
 
   /// The number of years spanned by the [DateTimeRange].
