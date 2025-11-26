@@ -50,8 +50,8 @@ extension DateTimeRangeExtensions on DateTimeRange {
   /// This avoids DST issues by working with normalized dates (year, month, day).
   int _calculateDayDifference(DateTime start, DateTime end) {
     // Normalize both dates to midnight to ensure consistent calculation.
-    final normalizedStart = DateTime(start.year, start.month, start.day);
-    final normalizedEnd = DateTime(end.year, end.month, end.day);
+    final normalizedStart = DateTime.utc(start.year, start.month, start.day);
+    final normalizedEnd = DateTime.utc(end.year, end.month, end.day);
 
     // Calculate the difference in days.
     return normalizedEnd.difference(normalizedStart).inDays;
