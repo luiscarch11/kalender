@@ -27,7 +27,11 @@ class MonthConfiguration extends MonthViewConfiguration {
     if (start.isAfter(monthRange.start)) {
       start = start.subtractDays(7);
     }
-    final end = start.addDays(7 * 5);
+    var endWeekStart = monthRange.end.subtract(const Duration(days: 1)).startOfWeekWithOffset(firstDayOfWeek);
+    if (endWeekStart.isAfter(monthRange.end.subtract(const Duration(days: 1)))) {
+      endWeekStart = endWeekStart.subtractDays(7);
+    }
+    final end = endWeekStart.addDays(7);
 
     return DateTimeRange(
       start: start,
@@ -79,7 +83,11 @@ class MonthConfiguration extends MonthViewConfiguration {
     if (start.isAfter(monthRange.start)) {
       start = start.subtractDays(7);
     }
-    final end = start.addDays(7 * 5);
+    var endWeekStart = monthRange.end.subtract(const Duration(days: 1)).startOfWeekWithOffset(firstDayOfWeek);
+    if (endWeekStart.isAfter(monthRange.end.subtract(const Duration(days: 1)))) {
+      endWeekStart = endWeekStart.subtractDays(7);
+    }
+    final end = endWeekStart.addDays(7);
 
     return DateTimeRange(
       start: start,

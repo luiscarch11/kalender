@@ -37,7 +37,7 @@ class MonthViewPageContent<T> extends StatelessWidget {
           builder: (context, child) {
             return Column(
               children: [
-                for (int c = 0; c < 5; c++)
+                for (int c = 0; c < visibleDateRange.dayDifference ~/ 7; c++)
                   Builder(
                     builder: (context) {
                       // Calculate the start date.
