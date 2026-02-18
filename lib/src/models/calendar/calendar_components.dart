@@ -186,8 +186,10 @@ class CalendarComponents {
     );
   }
 
-  Widget _defaultMonthGridBuilder() {
-    return const MonthGrid();
+  Widget _defaultMonthGridBuilder(DateTime month) {
+    return MonthGrid(
+      month: month,
+    );
   }
 
   Widget _defaultMonthCellHeaderBuilder(

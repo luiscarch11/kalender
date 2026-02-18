@@ -53,7 +53,7 @@ typedef TimeIndicatorBuilder = Widget Function(
 );
 
 /// The [MonthGridBuilder] is used to build the month grid displayed on the calendar.
-typedef MonthGridBuilder = Widget Function();
+typedef MonthGridBuilder = Widget Function(DateTime month);
 
 /// The [MonthCellHeaderBuilder] is used to build the header displayed above a day.
 typedef MonthCellHeaderBuilder = Widget Function(

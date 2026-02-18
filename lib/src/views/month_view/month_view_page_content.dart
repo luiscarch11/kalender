@@ -28,10 +28,16 @@ class MonthViewPageContent<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final scope = CalendarScope.of<T>(context);
     final components = CalendarStyleProvider.of(context).components;
-
+    final monthToRender = visibleDateRange.start.day == 1
+        ? visibleDateRange.start
+        : DateTime(
+            visibleDateRange.start.year,
+            visibleDateRange.start.month + 1,
+            1,
+          );
     return Stack(
       children: <Widget>[
-        components.monthGridBuilder(),
+        components.monthGridBuilder(monthToRender),
         ListenableBuilder(
           listenable: scope.eventsController,
           builder: (context, child) {
